@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>heavyliftLoan's — Transport & Heavy Machinery Finance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://gstatic.com" crossorigin>
+<link href="https://googleapis.com" rel="stylesheet">
+
+<!-- <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet"> -->
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0A1628;
+    --navy2: #0F2044;
+    --gold: #D4A832;
+    --gold2: #F0C84A;
+    --steel: #1E3A5F;
+    --light: #F4F6FA;
+    --muted: #6B7A99;
+    --white: #FFFFFF;
+    --card-bg: #111D30;
+    --border: rgba(212,168,50,0.18);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+  h1, h2, h3, h4 { font-family: 'Syne', sans-serif; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.1rem 5%;
+    background: rgba(10,22,40,0.88);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.3s;
+  }
+  .logo { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--gold); letter-spacing: -0.5px; }
+  .logo span { color: var(--white); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    background: var(--gold); color: var(--navy); font-family: 'Syne', sans-serif;
+    font-weight: 700; padding: 0.55rem 1.4rem; border-radius: 6px; text-decoration: none;
+    font-size: 0.9rem; transition: background 0.2s, transform 0.15s;
+  }
+  .nav-cta:hover { background: var(--gold2); transform: translateY(-1px); }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { width: 24px; height: 2px; background: var(--white); border-radius: 2px; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 8rem 5% 5rem;
+    position: relative; overflow: hidden;
+  }
+  .hero-grid-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(212,168,50,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212,168,50,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-glow {
+    position: absolute; top: -10%; right: -5%; width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(212,168,50,0.12) 0%, transparent 65%);
+    z-index: 0; pointer-events: none;
+  }
+  .hero-glow2 {
+    position: absolute; bottom: 0%; left: -10%; width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(30,58,95,0.6) 0%, transparent 65%);
+    z-index: 0;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 680px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(212,168,50,0.12); border: 1px solid var(--border);
+    color: var(--gold); font-size: 0.78rem; font-weight: 600; letter-spacing: 1px;
+    text-transform: uppercase; padding: 0.4rem 1rem; border-radius: 50px; margin-bottom: 1.5rem;
+  }
+  .hero-badge::before { content: ''; width: 7px; height: 7px; background: var(--gold); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+  .hero h1 { font-size: clamp(2.6rem, 5.5vw, 4.2rem); font-weight: 800; line-height: 1.08; letter-spacing: -1.5px; margin-bottom: 1.2rem; }
+  .hero h1 em { font-style: normal; color: var(--gold); }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.65); line-height: 1.7; max-width: 540px; margin-bottom: 2.5rem; }
+  .hero-cta-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--gold); color: var(--navy); font-family: 'Syne', sans-serif;
+    font-weight: 700; padding: 0.9rem 2rem; border-radius: 8px; text-decoration: none;
+    font-size: 1rem; display: inline-flex; align-items: center; gap: 8px;
+    transition: background 0.2s, transform 0.15s; border: none; cursor: pointer;
+  }
+  .btn-primary:hover { background: var(--gold2); transform: translateY(-2px); }
+  .btn-outline {
+    background: transparent; color: var(--white); font-family: 'Syne', sans-serif;
+    font-weight: 600; padding: 0.9rem 2rem; border-radius: 8px; text-decoration: none;
+    font-size: 1rem; border: 1px solid rgba(255,255,255,0.25);
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--gold); background: rgba(212,168,50,0.07); }
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 4rem; flex-wrap: wrap;
+    border-top: 1px solid var(--border); padding-top: 2.5rem;
+  }
+  .hero-stat h3 { font-size: 2.2rem; font-weight: 800; color: var(--gold); }
+  .hero-stat p { font-size: 0.82rem; color: rgba(255,255,255,0.5); margin-top: 2px; }
+  .hero-image-col {
+    position: absolute; right: 5%; top: 50%; transform: translateY(-50%);
+    z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 1rem;
+  }
+  .photo-frame {
+    width: 280px; height: 360px; border-radius: 20px;
+    border: 2px solid var(--gold);
+    overflow: hidden; position: relative;
+    background: var(--card-bg);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 0 8px rgba(212,168,50,0.06);
+  }
+.photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+  .photo-placeholder {
+    width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 1rem; background: linear-gradient(135deg, #1E3A5F, #111D30);
+  }
+  .photo-placeholder svg { opacity: 0.5; }
+  .photo-placeholder p { font-size: 0.8rem; color: rgba(255,255,255,0.4); }
+  .photo-card {
+    background: rgba(15,32,68,0.9); border: 1px solid var(--border);
+    border-radius: 12px; padding: 0.8rem 1.2rem; width: 280px;
+    display: flex; align-items: center; gap: 0.7rem;
+  }
+  .photo-card-icon { font-size: 1.8rem; }
+  .photo-card h4 { font-size: 0.92rem; font-weight: 600; }
+  .photo-card p { font-size: 0.75rem; color: var(--gold); }
+
+  /* TICKER */
+  .ticker-wrap { background: var(--gold); padding: 0.7rem 0; overflow: hidden; }
+  .ticker { display: flex; white-space: nowrap; animation: ticker 22s linear infinite; }
+  .ticker-item { font-family: 'Syne', sans-serif; font-size: 0.82rem; font-weight: 700; color: var(--navy); padding: 0 3rem; text-transform: uppercase; letter-spacing: 1px; }
+  @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+  /* SECTIONS */
+  section { padding: 6rem 5%; }
+  .section-label {
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.8rem;
+  }
+  .section-title { font-size: clamp(1.9rem, 3.5vw, 2.8rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.5px; }
+  .section-sub { font-size: 1rem; color: rgba(255,255,255,0.55); margin-top: 0.8rem; max-width: 560px; line-height: 1.7; }
+
+  /* WHY CHOOSE */
+  .why-section { background: var(--navy2); }
+  .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 3.5rem; }
+  .why-card {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px;
+    padding: 2rem; transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .why-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--gold); transform: scaleX(0); transform-origin: left;
+    transition: transform 0.35s ease;
+  }
+  .why-card:hover::before { transform: scaleX(1); }
+  .why-card:hover { transform: translateY(-6px); border-color: rgba(212,168,50,0.35); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+  .why-icon { width: 52px; height: 52px; border-radius: 12px; background: rgba(212,168,50,0.12); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.2rem; }
+  .why-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.6rem; }
+  .why-card p { font-size: 0.9rem; color: rgba(255,255,255,0.55); line-height: 1.65; }
+
+  /* LOAN TYPES */
+  .loans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; margin-top: 3.5rem; }
+  .loan-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 14px; padding: 1.8rem 1.5rem; text-align: center;
+    transition: transform 0.2s, border-color 0.2s;
+    cursor: default;
+  }
+  .loan-card:hover { transform: translateY(-4px); border-color: rgba(212,168,50,0.4); }
+  .loan-card .loan-emoji { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+  .loan-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .loan-card p { font-size: 0.82rem; color: rgba(255,255,255,0.5); }
+  .loan-rate { display: inline-block; margin-top: 0.8rem; background: rgba(212,168,50,0.12); color: var(--gold); font-size: 0.78rem; font-weight: 600; padding: 0.25rem 0.7rem; border-radius: 50px; }
+
+  /* PROCESS */
+  .process-section { background: var(--navy2); }
+  .process-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0; margin-top: 3.5rem; position: relative; }
+  .process-step { padding: 1.5rem; text-align: center; position: relative; }
+  .step-num { width: 56px; height: 56px; border-radius: 50%; background: rgba(212,168,50,0.1); border: 2px solid var(--gold); color: var(--gold); font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; }
+  .process-step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .process-step p { font-size: 0.85rem; color: rgba(255,255,255,0.5); }
+
+  /* TESTIMONIALS */
+  .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.4rem; margin-top: 3.5rem; }
+  .testimonial-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 16px; padding: 1.8rem;
+    transition: transform 0.2s;
+  }
+  .testimonial-card:hover { transform: translateY(-4px); }
+  .stars { color: var(--gold); font-size: 1.1rem; margin-bottom: 1rem; letter-spacing: 2px; }
+  .testimonial-card p { font-size: 0.92rem; color: rgba(255,255,255,0.72); line-height: 1.7; margin-bottom: 1.2rem; font-style: italic; }
+  .testimonial-author { display: flex; align-items: center; gap: 0.8rem; }
+  .author-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--steel); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem; color: var(--gold); border: 2px solid var(--border); flex-shrink: 0; }
+  .author-name { font-size: 0.9rem; font-weight: 600; }
+  .author-role { font-size: 0.78rem; color: rgba(255,255,255,0.45); }
+
+  /* EMI CALCULATOR */
+  .emi-section { background: var(--navy2); }
+  .emi-container {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+    align-items: start; margin-top: 3.5rem;
+  }
+  .emi-form { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; }
+  .emi-form label { font-size: 0.82rem; font-weight: 600; color: rgba(255,255,255,0.6); display: block; margin-bottom: 0.4rem; margin-top: 1.2rem; letter-spacing: 0.5px; }
+  .emi-form label:first-child { margin-top: 0; }
+  .emi-form input[type=range] {
+    width: 100%; accent-color: var(--gold); cursor: pointer; margin-top: 0.3rem;
+  }
+  .range-val { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--gold); }
+  .emi-result {
+    background: linear-gradient(135deg, rgba(212,168,50,0.12), rgba(212,168,50,0.04));
+    border: 1px solid var(--border); border-radius: 20px; padding: 2.5rem;
+    display: flex; flex-direction: column; gap: 1.5rem;
+  }
+  .emi-big { text-align: center; }
+  .emi-big p { font-size: 0.82rem; color: rgba(255,255,255,0.5); margin-bottom: 0.5rem; }
+  .emi-big h2 { font-size: 3rem; font-weight: 800; color: var(--gold); }
+  .emi-breakdown { display: flex; flex-direction: column; gap: 0.7rem; }
+  .emi-row { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
+  .emi-row:last-child { border-bottom: none; }
+  .emi-label { color: rgba(255,255,255,0.55); }
+  .emi-value { font-weight: 600; color: var(--white); }
+
+  /* ELIGIBILITY */
+  .eligibility-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 3rem; }
+  .elig-card {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px;
+    padding: 1.2rem 1.5rem; display: flex; align-items: flex-start; gap: 1rem;
+  }
+  .elig-check { width: 28px; height: 28px; border-radius: 50%; background: rgba(212,168,50,0.12); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; margin-top: 2px; }
+  .elig-card h4 { font-size: 0.92rem; font-weight: 600; margin-bottom: 0.2rem; }
+  .elig-card p { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+
+  /* CONTACT */
+  .contact-section { background: var(--navy2); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-top: 3.5rem; align-items: start; }
+  .contact-info { display: flex; flex-direction: column; gap: 1.5rem; }
+  .contact-item { display: flex; align-items: flex-start; gap: 1rem; }
+  .contact-icon { width: 48px; height: 48px; border-radius: 12px; background: rgba(212,168,50,0.1); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+  .contact-item h4 { font-size: 0.82rem; color: rgba(255,255,255,0.45); margin-bottom: 0.25rem; }
+  .contact-item p, .contact-item a { font-size: 1rem; font-weight: 500; color: var(--white); text-decoration: none; }
+  .contact-item a:hover { color: var(--gold); }
+  .contact-form { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 2.5rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.2rem; }
+  .form-group label { font-size: 0.82rem; font-weight: 500; color: rgba(255,255,255,0.55); }
+  .form-group input, .form-group select, .form-group textarea {
+    background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px;
+    color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 0.92rem;
+    padding: 0.7rem 1rem; outline: none; transition: border-color 0.2s;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold); }
+  .form-group select option { background: var(--navy2); }
+  .form-group textarea { resize: vertical; min-height: 90px; }
+  .submit-btn {
+    width: 100%; background: var(--gold); color: var(--navy); font-family: 'Syne', sans-serif;
+    font-size: 1rem; font-weight: 700; padding: 0.9rem; border: none; border-radius: 8px;
+    cursor: pointer; transition: background 0.2s, transform 0.15s; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  }
+  .submit-btn:hover { background: var(--gold2); transform: translateY(-1px); }
+
+  /* FLOATING CTA */
+  .float-cta {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 200;
+    background: var(--gold); color: var(--navy); font-family: 'Syne', sans-serif;
+    font-weight: 700; padding: 0.8rem 1.5rem; border-radius: 50px;
+    text-decoration: none; font-size: 0.9rem; box-shadow: 0 8px 30px rgba(212,168,50,0.35);
+    display: flex; align-items: center; gap: 0.5rem; animation: floatIn 1s 2s both;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .float-cta:hover { transform: translateY(-3px) scale(1.03); background: var(--gold2); }
+  @keyframes floatIn { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+
+  /* FOOTER */
+  footer {
+    background: #060E1A; padding: 3rem 5% 2rem;
+    border-top: 1px solid var(--border);
+    display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center;
+  }
+  .footer-logo { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--gold); margin-bottom: 0.5rem; }
+  footer p { font-size: 0.82rem; color: rgba(255,255,255,0.35); }
+  .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .footer-links a { font-size: 0.82rem; color: rgba(255,255,255,0.45); text-decoration: none; }
+  .footer-links a:hover { color: var(--gold); }
+
+  /* ANIMATIONS */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* TRUST STRIP */
+  .trust-strip { background: var(--card-bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 1.5rem 5%; }
+  .trust-inner { display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+  .trust-item { display: flex; align-items: center; gap: 0.7rem; font-size: 0.88rem; color: rgba(255,255,255,0.6); }
+  .trust-item span.icon { font-size: 1.2rem; }
+
+  /* RESPONSIVE */
+  @media(max-width: 900px) {
+    .hero-image-col { display: none; }
+    .emi-container { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    footer { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+  }
+  @media(max-width: 600px) {
+    section { padding: 4rem 5%; }
+    .hero { padding: 7rem 5% 4rem; }
+    .hero-stats { gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">HeavyLift<span>Loan's</span></div>
+  <ul class="nav-links">
+    <li><a href="#loans">Loan Types</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#calculator">EMI Calc</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Apply Now →</a>
+  <div class="hamburger" onclick="toggleMenu(this)"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-content reveal">
+    <div class="hero-badge">Trusted Bank Finance Specialist</div>
+    <h1>Heavy Machinery &amp;<br>Transport<br><em>Loans Made Easy</em></h1>
+    <p>Get your truck, JCB, crane, or fleet financed in record time. 12+ years of expertise. Direct bank access. Zero hidden charges.</p>
+    <div class="hero-cta-group">
+      <a href="#contact" class="btn-primary">Apply for Loan &nbsp;→</a>
+      <a href="#calculator" class="btn-outline">📊 EMI Calculator</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <h3 id="stat1">0</h3>
+        <p>Loans Sanctioned</p>
+      </div>
+      <div class="hero-stat">
+        <h3>₹<span id="stat2">0</span>Cr+</h3>
+        <p>Total Disbursed</p>
+      </div>
+      <div class="hero-stat">
+        <h3 id="stat3">0</h3>
+        <p>Happy Clients</p>
+      </div>
+    </div>
+  </div>
+  <div class="hero-image-col">
+    <div class="photo-frame">
+      <div class="photo-placeholder">
+        <img src="images/professional-photo.png" alt="Professional Photo">
+      </div>
+    </div>
+    <div class="photo-card reveal reveal-delay-1">
+      <span class="photo-card-icon">🏦</span>
+      <div>
+        <h4>ICICI / SBI / Axis / NBFC'S</h4>
+        <p>Bank Certified Specialist</p>
+      </div>
+    </div>
+    <div class="photo-card reveal reveal-delay-2">
+      <span class="photo-card-icon">⚡</span>
+      <div>
+        <h4>48-hr Approval</h4>
+        <p>Fastest processing guarantee</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item">🚛 Truck Loans</span>
+    <span class="ticker-item">🏗️ JCB Finance</span>
+    <span class="ticker-item">🏗️ Crane Loans</span>
+    <span class="ticker-item">⛏️ Excavator Finance</span>
+    <span class="ticker-item">🚌 Bus & Fleet Loans</span>
+    <span class="ticker-item">⚙️ Tractor Finance</span>
+    <span class="ticker-item">🚜 Tipper Loans</span>
+    <span class="ticker-item">🔧 Machinery Finance</span>
+    <span class="ticker-item">🚛 Truck Loans</span>
+    <span class="ticker-item">🏗️ JCB Finance</span>
+    <span class="ticker-item">🏗️ Crane Loans</span>
+    <span class="ticker-item">⛏️ Excavator Finance</span>
+    <span class="ticker-item">🚌 Bus & Fleet Loans</span>
+    <span class="ticker-item">⚙️ Tractor Finance</span>
+    <span class="ticker-item">🚜 Tipper Loans</span>
+    <span class="ticker-item">🔧 Machinery Finance</span>
+  </div>
+</div>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <div class="trust-inner">
+    <div class="trust-item"><span class="icon">🏦</span> Authorized by SBI, HDFC, Axis Bank</div>
+    <div class="trust-item"><span class="icon">🔒</span> 100% Secure Document Process</div>
+    <div class="trust-item"><span class="icon">📋</span> Minimal Documentation</div>
+    <div class="trust-item"><span class="icon">✅</span> 98% Approval Rate</div>
+    <div class="trust-item"><span class="icon">⚡</span> 48-Hour Disbursement</div>
+  </div>
+</div>
+
+<!-- LOAN TYPES -->
+<section id="loans">
+  <div class="section-label">What We Finance</div>
+  <h2 class="section-title">Every Vehicle &amp; Machine<br>We've Got You Covered</h2>
+  <p class="section-sub">From a single truck to an entire fleet — we handle transport and heavy equipment financing across all categories.</p>
+  <div class="loans-grid">
+    <div class="loan-card reveal">
+      <span class="loan-emoji">🚛</span>
+      <h3>Commercial Trucks</h3>
+      <p>Tata, Ashok Leyland, Mahindra & all brands</p>
+      <span class="loan-rate">From 8.5% p.a.</span>
+    </div>
+    <div class="loan-card reveal reveal-delay-1">
+      <span class="loan-emoji">🏗️</span>
+      <h3>JCB & Excavators</h3>
+      <p>All construction machinery models</p>
+      <span class="loan-rate">From 9% p.a.</span>
+    </div>
+    <div class="loan-card reveal reveal-delay-2">
+      <span class="loan-emoji">🏗️</span>
+      <h3>Cranes & Loaders</h3>
+      <p>Heavy lift equipment finance</p>
+      <span class="loan-rate">From 9.5% p.a.</span>
+    </div>
+    <div class="loan-card reveal reveal-delay-1">
+      <span class="loan-emoji">🚌</span>
+      <h3>Bus & Mini-Bus</h3>
+      <p>School, city, and private transport</p>
+      <span class="loan-rate">From 8.75% p.a.</span>
+    </div>
+    <div class="loan-card reveal reveal-delay-2">
+      <span class="loan-emoji">🚜</span>
+      <h3>Tippers & Dumpers</h3>
+      <p>Mining and road construction fleet</p>
+      <span class="loan-rate">From 9.2% p.a.</span>
+    </div>
+    <div class="loan-card reveal reveal-delay-3">
+      <span class="loan-emoji">⚙️</span>
+      <h3>Tractors & Farm Equipment</h3>
+      <p>Agricultural machinery financing</p>
+      <span class="loan-rate">From 7.5% p.a.</span>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE -->
+<section class="why-section" id="why">
+  <div class="section-label">Why Choose Us</div>
+  <h2 class="section-title">The Expert Your<br>Business Deserves</h2>
+  <p class="section-sub">Not all loan agents are equal. Here's what sets a 12-year bank veteran apart from the rest.</p>
+  <div class="why-grid">
+    <div class="why-card reveal">
+      <div class="why-icon">🏦</div>
+      <h3>Direct Bank Access</h3>
+      <p>As an in-bank specialist, I have direct relationships with credit managers — meaning faster decisions and better rates than external agents.</p>
+    </div>
+    <div class="why-card reveal reveal-delay-1">
+      <div class="why-icon">⚡</div>
+      <h3>48-Hour Approval</h3>
+      <p>Our streamlined internal process ensures your loan is approved and disbursed faster than any other channel — guaranteed or I'll tell you why.</p>
+    </div>
+    <div class="why-card reveal reveal-delay-2">
+      <div class="why-icon">💯</div>
+      <h3>Zero Hidden Charges</h3>
+      <p>Complete transparency on fees, processing charges, and interest. What I quote is exactly what you pay — no last-minute surprises.</p>
+    </div>
+    <div class="why-card reveal reveal-delay-3">
+      <div class="why-icon">📋</div>
+      <h3>Minimal Documentation</h3>
+      <p>I've streamlined the paperwork to bare essentials. No running around — one meeting and your documents are handled.</p>
+    </div>
+    <div class="why-card reveal reveal-delay-1">
+      <div class="why-icon">🤝</div>
+      <h3>End-to-End Support</h3>
+      <p>From application to disbursement to EMI management, I'm your single point of contact. No middlemen. No delays. Just results.</p>
+    </div>
+    <div class="why-card reveal reveal-delay-2">
+      <div class="why-icon">📈</div>
+      <h3>Best Interest Rates</h3>
+      <p>My bank tenure and volume relationships let me negotiate interest rates that retail customers simply can't access on their own.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="process-section" id="process">
+  <div class="section-label">The Process</div>
+  <h2 class="section-title">From Call to Keys<br>in 4 Simple Steps</h2>
+  <div class="process-steps">
+    <div class="process-step reveal">
+      <div class="step-num">01</div>
+      <h3>Free Consultation</h3>
+      <p>Call or WhatsApp. I assess your need, vehicle choice, and eligibility in 15 minutes.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-1">
+      <div class="step-num">02</div>
+      <h3>Document Collection</h3>
+      <p>I guide you through exactly what's needed — KYC, income proof, vehicle quote.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-2">
+      <div class="step-num">03</div>
+      <h3>Bank Processing</h3>
+      <p>Internal fast-track processing with credit team — typical turnaround 24–48 hrs.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-3">
+      <div class="step-num">04</div>
+      <h3>Disbursement</h3>
+      <p>Money hits dealer account. You drive away. I stay on call for any post-loan support.</p>
+    </div>
+  </div>
+</section>
+
+<!-- EMI CALCULATOR -->
+<section class="emi-section" id="calculator">
+  <div class="section-label">EMI Calculator</div>
+  <h2 class="section-title">Plan Your EMI<br>Before You Apply</h2>
+  <p class="section-sub">Get an instant estimate. No sign-up required.</p>
+  <div class="emi-container">
+    <div class="emi-form reveal">
+      <label>Loan Amount<br><span class="range-val" id="loanAmtVal">₹25,00,000</span></label>
+      <input type="range" id="loanAmt" min="100000" max="10000000" step="50000" value="2500000" oninput="calcEMI()">
+      <label>Interest Rate (per annum)<br><span class="range-val" id="rateVal">9.5%</span></label>
+      <input type="range" id="rate" min="7" max="16" step="0.25" value="9.5" oninput="calcEMI()">
+      <label>Loan Tenure<br><span class="range-val" id="tenureVal">5 Years</span></label>
+      <input type="range" id="tenure" min="1" max="10" step="1" value="5" oninput="calcEMI()">
+      <br><br>
+      <a href="#contact" class="btn-primary" style="justify-content:center;margin-top:0.5rem">Get This Rate → Apply Now</a>
+    </div>
+    <div class="emi-result reveal reveal-delay-1">
+      <div class="emi-big">
+        <p>Your Monthly EMI</p>
+        <h2 id="emiResult">₹52,411</h2>
+      </div>
+      <div class="emi-breakdown">
+        <div class="emi-row"><span class="emi-label">Principal Amount</span><span class="emi-value" id="emiPrincipal">₹25,00,000</span></div>
+        <div class="emi-row"><span class="emi-label">Total Interest</span><span class="emi-value" id="emiInterest">₹6,44,660</span></div>
+        <div class="emi-row"><span class="emi-label">Total Payment</span><span class="emi-value" id="emiTotal">₹31,44,660</span></div>
+        <div class="emi-row"><span class="emi-label">Tenure</span><span class="emi-value" id="emiTenure">60 months</span></div>
+      </div>
+      <p style="font-size:0.78rem;color:rgba(255,255,255,0.35);text-align:center">*Indicative figures. Actual rates may vary.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ELIGIBILITY -->
+<section id="eligibility">
+  <div class="section-label">Eligibility</div>
+  <h2 class="section-title">Who Can Apply?</h2>
+  <p class="section-sub">Our loans are designed to be accessible. Here's what you generally need to qualify.</p>
+  <div class="eligibility-grid">
+    <div class="elig-card reveal"><div class="elig-check">✓</div><div><h4>Indian Citizen</h4><p>Age 21–65 at time of application</p></div></div>
+    <div class="elig-card reveal reveal-delay-1"><div class="elig-check">✓</div><div><h4>Valid Driving License</h4><p>HMV/LMV as applicable for vehicle type</p></div></div>
+    <div class="elig-card reveal reveal-delay-2"><div class="elig-check">✓</div><div><h4>Stable Income</h4><p>ITR for 2 years or 6 months bank statement</p></div></div>
+    <div class="elig-card reveal reveal-delay-3"><div class="elig-check">✓</div><div><h4>Existing Business Owners</h4><p>Proprietors, partnerships, Pvt Ltd firms</p></div></div>
+    <div class="elig-card reveal reveal-delay-1"><div class="elig-check">✓</div><div><h4>First-Time Buyers</h4><p>Special schemes for new entrepreneurs</p></div></div>
+    <div class="elig-card reveal reveal-delay-2"><div class="elig-check">✓</div><div><h4>Fleet Operators</h4><p>Multi-vehicle financing available</p></div></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" style="background:var(--navy2)">
+  <div class="section-label">Client Reviews</div>
+  <h2 class="section-title">What Our Clients Say</h2>
+  <p class="section-sub">Real stories from real transport & construction business owners across the region.</p>
+  <div class="testimonials-grid">
+    <div class="testimonial-card reveal">
+      <div class="stars">★★★★★</div>
+      <p>"I needed 3 trucks financed urgently for a new government contract. He got it done in 36 hours. I've tried other agents — nobody comes close to this speed or honesty."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">RS</div>
+        <div><div class="author-name">Ramesh Singh</div><div class="author-role">Fleet Owner, Ludhiana</div></div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal reveal-delay-1">
+      <div class="stars">★★★★★</div>
+      <p>"Bought my JCB through him last year. The process was the smoothest I've ever seen. Zero runaround, very clear on every charge. Will come back for the next machine too."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">MK</div>
+        <div><div class="author-name">Mukesh Kumar</div><div class="author-role">Construction Contractor, Delhi NCR</div></div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal reveal-delay-2">
+      <div class="stars">★★★★★</div>
+      <p>"As a first-time borrower I was nervous. He explained everything patiently, found me a scheme I didn't even know existed, and got me a rate 0.75% lower than what my friend paid elsewhere."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">PD</div>
+        <div><div class="author-name">Priya Devi</div><div class="author-role">School Bus Operator, Jaipur</div></div>
+      </div>
+    </div>
+ <div class="testimonial-card reveal reveal-delay">
+  <div class="stars">★★★★★</div>
+  <p>"Needed financing for two commercial vehicles to expand my business. The entire process was transparent, documentation was handled smoothly, and the loan was approved much faster than I expected. Highly professional service."</p>
+  <div class="testimonial-author">
+    <div class="author-avatar">AK</div>
+    <div>
+      <div class="author-name">Anil Khanna</div>
+      <div class="author-role">Transport Business Owner, Delhi</div>
+    </div>
+  </div>
+</div>
+
+<div class="testimonial-card reveal reveal-delay-1">
+  <div class="stars">★★★★★</div>
+  <p>"I was looking for the best finance option for my new pickup vehicle. He compared multiple lenders, explained every detail clearly, and got my loan sanctioned without any hassle. Great experience from start to finish."</p>
+  <div class="testimonial-author">
+    <div class="author-avatar">DK</div>
+    <div>
+      <div class="author-name">Deepak Kumar</div>
+      <div class="author-role">Small Business Owner, Rohini, Delhi</div>
+    </div>
+  </div>
+</div>
+    <div class="testimonial-card reveal reveal-delay-2">
+      <div class="stars">★★★★★</div>
+      <p>"My CIBIL wasn't perfect. Most places turned me away. He worked with me, explained what to fix, and got my tipper loan sanctioned within a week. Legendary."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">VR</div>
+        <div><div class="author-name">Vijay Rathore</div><div class="author-role">Mining Contractor, Rajasthan</div></div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal reveal-delay">
+      <div class="stars">★★★★★</div>
+      <p>"Tractor loan for my agri-transport business — done in 2 days. Interest rate was the best in the market. My entire village now goes to him. Highly trusted."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">BL</div>
+        <div><div class="author-name">Balu Lal</div><div class="author-role">Tractor Owner, Haryana</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="section-label">Get In Touch</div>
+  <h2 class="section-title">Ready to Get Your<br>Loan Sanctioned?</h2>
+  <p class="section-sub">Fill the form or reach out directly. I personally handle every enquiry — no call centers, no waiting.</p>
+  <div class="contact-grid">
+    <div class="contact-info reveal">
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div><h4>Phone / WhatsApp</h4><a href="tel:+919876543210">+91 836 876 7342</a></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📧</div>
+        <div><h4>Email</h4><a href="mailto:himanshuaggarwal26515@gmail.com">himanshuaggarwal26515@gmail.com</a></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🏦</div>
+        <div><h4>Bank Branch</h4><p>ICICI Bank, Rohini Sector-7 , New Delhi</p></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🕐</div>
+        <div><h4>Working Hours</h4><p>Mon–Sat: 9:30 AM – 6:30 PM</p></div>
+      </div>
+      <a href="https://wa.me/918368767342?text=Hi%2C%20I%20need%20a%20transport%20loan%20enquiry" class="btn-primary" style="width:fit-content;margin-top:0.5rem">
+        💬 WhatsApp Now
+      </a>
+    </div>
+    <div class="contact-form reveal reveal-delay-1">
+      <div class="form-row">
+        <div class="form-group"><label>Your Name</label><input type="text" placeholder="Ramesh Kumar"></div>
+        <div class="form-group"><label>Phone Number</label><input type="tel" placeholder="+91 98XXX XXXXX"></div>
+      </div>
+      <div class="form-group"><label>Loan Type</label>
+        <select>
+          <option>Select Loan Type</option>
+          <option>Commercial Truck Loan</option>
+          <option>JCB / Excavator Finance</option>
+          <option>Crane Finance</option>
+          <option>Bus / Mini-Bus Loan</option>
+          <option>Tipper / Dumper Loan</option>
+          <option>Tractor Finance</option>
+          <option>Fleet Finance (Multiple Vehicles)</option>
+          <option>Other Heavy Machinery</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Loan Amount (approx.)</label><input type="text" placeholder="e.g. ₹25 Lakhs"></div>
+        <div class="form-group"><label>City / State</label><input type="text" placeholder="Delhi, NCR"></div>
+      </div>
+      <div class="form-group"><label>Message (optional)</label><textarea placeholder="Tell me about your vehicle requirement or any questions..."></textarea></div>
+      <button class="submit-btn" onclick="handleSubmit(this)">Send Enquiry &nbsp;→</button>
+    </div>
+  </div>
+</section>
+
+<!-- FLOATING WHATSAPP -->
+<a class="float-cta" href="https://wa.me/918368767342?text=Hi%2C%20I%20need%20a%20transport%20loan" target="_blank"> WhatsApp Us</a>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">heavyliftLoan's</div>
+    <p>Transport & Heavy Machinery Finance Specialist | Working within India's leading banks since 2022</p>
+    <p style="margin-top:0.5rem">© 2026 heavyliftLoan's. All rights reserved. | Disclaimer: Loan approval subject to bank's credit policy.</p>
+  </div>
+  <div class="footer-links">
+    <a href="#loans">Loan Types</a>
+    <a href="#why">Why Us</a>
+    <a href="#calculator">EMI Calc</a>
+    <a href="#contact">Contact</a>
+  </div>
+</footer>
+
+<script>
+  // REVEAL ON SCROLL
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => observer.observe(r));
+
+  // COUNTER ANIMATION
+  function animateCount(el, target, prefix, suffix, duration) {
+    let start = 0, step = target / (duration / 16);
+    const t = setInterval(() => {
+      start = Math.min(start + step, target);
+      el.textContent = prefix + Math.floor(start).toLocaleString('en-IN') + suffix;
+      if(start >= target) clearInterval(t);
+    }, 16);
+  }
+  const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting) {
+        animateCount(document.getElementById('stat1'), 1400, '', '+', 1800);
+        animateCount(document.getElementById('stat2'), 85, '', '', 1800);
+        animateCount(document.getElementById('stat3'), 1200, '', '+', 1800);
+        statsObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.5 });
+  statsObserver.observe(document.querySelector('.hero-stats'));
+
+  // EMI CALCULATOR
+  function fmtINR(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
+  function calcEMI() {
+    const P = +document.getElementById('loanAmt').value;
+    const r = +document.getElementById('rate').value / 12 / 100;
+    const n = +document.getElementById('tenure').value * 12;
+    const emi = P * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1);
+    const total = emi * n;
+    document.getElementById('loanAmtVal').textContent = fmtINR(P);
+    document.getElementById('rateVal').textContent = document.getElementById('rate').value + '%';
+    document.getElementById('tenureVal').textContent = document.getElementById('tenure').value + ' Year' + (document.getElementById('tenure').value > 1 ? 's' : '');
+    document.getElementById('emiResult').textContent = fmtINR(emi);
+    document.getElementById('emiPrincipal').textContent = fmtINR(P);
+    document.getElementById('emiInterest').textContent = fmtINR(total - P);
+    document.getElementById('emiTotal').textContent = fmtINR(total);
+    document.getElementById('emiTenure').textContent = n + ' months';
+  }
+  calcEMI();
+
+  // FORM SUBMIT
+  function handleSubmit(btn) {
+    btn.textContent = '✓ Enquiry Sent! We\'ll call you shortly.';
+    btn.style.background = '#2a7a4e';
+    btn.style.color = '#fff';
+    btn.disabled = true;
+  }
+
+  // HAMBURGER
+  function toggleMenu(el) {
+    el.classList.toggle('open');
+  }
+
+  // SCROLL NAV SHADOW
+  window.addEventListener('scroll', () => {
+    document.querySelector('nav').style.background =
+      window.scrollY > 50 ? 'rgba(10,22,40,0.97)' : 'rgba(10,22,40,0.88)';
+  });
+</script>
+</body>
+</html>
